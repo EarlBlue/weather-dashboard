@@ -1,9 +1,7 @@
-const historyData = [];
+const mySearches = [];
+//var n = mySearches.length
 
-//overwrite array data
-
-
-
+//To get current weather forecast and UV index data
 function currentWeatherForecast(location) {
     let queryLocation = "http://api.openweathermap.org/data/2.5/weather?q=" + location + "&units=imperial&APPID=184856c0a526c2d51fff6a52548b9f0c"; 
     $.ajax({
@@ -13,8 +11,6 @@ function currentWeatherForecast(location) {
         console.log(response);
         var city = response.name
         var country = response.sys.country
-        var date
-        var icon = response.weather[0].icon
         var temp = response.main.temp
         var humidity = response.main.humidity
         var windSpeed = response.wind.speed
@@ -35,14 +31,16 @@ function currentWeatherForecast(location) {
         getUvIndex();
         var request = $("<h5>").text(city + ", " + country);
         var tempurature = $("<h5>").text("Tempurature: " + temp + " F");
-        var iconImg = $("<img>").attr("src", icon);
+        //var iconImg = $("<img>").attr("src", icon);
         var hum = $("<h5>").text("Humidity: " + humidity + "%");
         var wind = $("<h5>").text("Wind Speed: " + windSpeed + " MPH")
-        $("#data").append(request, iconImg, tempurature, hum, wind);
+        $("#data").append(request, tempurature, hum, wind);
         
     });
 }
 
+
+//To get 5 day forecast data
 function fiveDayWeatherForecast(location) {
     let queryLocation = "http://api.openweathermap.org/data/2.5/forecast?q=" + location + "&units=imperial&APPID=184856c0a526c2d51fff6a52548b9f0c"; 
     $.ajax({
@@ -51,7 +49,6 @@ function fiveDayWeatherForecast(location) {
     }).then(function(response) {
         console.log(response);
         for(var i = 2; i < response.list.length; i += 8) {
-            console.log(response.list[i].dt_txt)
             var card = 
             `<li class="list-group-item">
                 <div class="card-body">
@@ -65,18 +62,53 @@ function fiveDayWeatherForecast(location) {
     });
 };
 
-$("#search").on("click", function(event) {
+
+//Captures location input from search feature, runs forecast functions, stores location to local storage
+$("#search").on("click", function() {
     event.preventDefault();
-    //console.log("This button was clicked")
     var text = $("#location")
     .val()
     .toString();
     console.log(text);
     var location = text
-    localStorage.setItem("mySearch", location);
+    mySearches.push(location);
+    console.log(mySearches)
     currentWeatherForecast(location);
     fiveDayWeatherForecast(location);
 });
+
+
+//To clear local storage
+function clearStorage() {
+    localStorage.clear()
+}
+//clearStorage();
+
+
+//Behavior on window load
+window.onload = function(){
+    var search = window.localStorage.getItem('mySearch')
+    mySearches.push(search)
+    console.log("Loaded")
+    console.log(search)
+    //this.currentWeatherForecast(search);
+    //this.fiveDayWeatherForecast(search);
+    //this.currentWeatherForecast()
+};
+
+
+//Local storage processing
+function localStorage() {
+    var i = mySearches.length - 1
+    var searches = JSON.stringify(mySearches)
+    localStorage.setItem(searches)
+    var string = JSON.stringify(mySearches)
+    localStorage.setItem(i , string);
+    var group = `<li class="list-group-item">${location}</li>`
+}
+
+// mySearches.push(location)
+//     localStorage.setItem("mySearch", location);
 
     //Function to display 5 day forcast
 
@@ -85,6 +117,10 @@ $("#search").on("click", function(event) {
     //Function to fill in recent searches
 
     //Function to access local storage for last location search 
+
+    //push search locations to array
+    //push to local storage using index position as key
+
 
 
    
