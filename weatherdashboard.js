@@ -28,13 +28,13 @@ function currentWeatherForecast(location) {
                 $("#UV").append(uv);
             });
         };
-        getUvIndex();
-        var request = $("<h5>").text(city + ", " + country);
-        var tempurature = $("<h5>").text("Tempurature: " + temp + " F");
-        //var iconImg = $("<img>").attr("src", icon);
-        var hum = $("<h5>").text("Humidity: " + humidity + "%");
-        var wind = $("<h5>").text("Wind Speed: " + windSpeed + " MPH")
-        $("#data").append(request, tempurature, hum, wind);
+            getUvIndex();
+                var request = $("<h5>").text(city + ", " + country);
+                var tempurature = $("<h5>").text("Tempurature: " + temp + " F");
+                //var iconImg = $("<img>").attr("src", icon);
+                var hum = $("<h5>").text("Humidity: " + humidity + "%");
+                var wind = $("<h5>").text("Wind Speed: " + windSpeed + " MPH")
+                $("#data").append(request, tempurature, hum, wind);
         
     });
 }
