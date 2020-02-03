@@ -3,6 +3,7 @@ const mySearches = [];
 
 //To get current weather forecast and UV index data
 function currentWeatherForecast(location) {
+    $("#UV").empty()
     let queryLocation = "http://api.openweathermap.org/data/2.5/weather?q=" + location + "&units=imperial&APPID=184856c0a526c2d51fff6a52548b9f0c"; 
     $.ajax({
         url: queryLocation,
@@ -29,6 +30,7 @@ function currentWeatherForecast(location) {
             });
         };
             getUvIndex();
+                $("#data").empty()
                 var request = $("<h5>").text(city + ", " + country);
                 var tempurature = $("<h5>").text("Tempurature: " + temp + " F");
                 //var iconImg = $("<img>").attr("src", icon);
@@ -42,6 +44,7 @@ function currentWeatherForecast(location) {
 
 //To get 5 day forecast data
 function fiveDayWeatherForecast(location) {
+    $("#card-content").empty()
     let queryLocation = "http://api.openweathermap.org/data/2.5/forecast?q=" + location + "&units=imperial&APPID=184856c0a526c2d51fff6a52548b9f0c"; 
     $.ajax({
         url: queryLocation,
@@ -57,7 +60,7 @@ function fiveDayWeatherForecast(location) {
                 <p class="card-text">Humidity: ${response.list[i].main.humidity}%</p>
                 </div> 
              </li>`
-        $("#card-content").append(card)
+            $("#card-content").append(card)
         };
     });
 };
@@ -67,14 +70,20 @@ function fiveDayWeatherForecast(location) {
 $("#search").on("click", function() {
     event.preventDefault();
     var text = $("#location")
-    .val()
-    .toString();
-    console.log(text);
+                .val()
+                .toString();
+    //console.log(text);
     var location = text
+    var key = mySearches.length
+    if(mySearches.includes(text) === false) {
     mySearches.push(location);
+    localStorage.setItem("My Searches" , JSON.stringify(mySearches));
+    localStorage.setItem(key , location);
+    }
     console.log(mySearches)
     currentWeatherForecast(location);
     fiveDayWeatherForecast(location);
+    
 });
 
 
@@ -87,24 +96,23 @@ function clearStorage() {
 
 //Behavior on window load
 window.onload = function(){
-    var search = window.localStorage.getItem('mySearch')
-    mySearches.push(search)
-    console.log("Loaded")
-    console.log(search)
+    //var search = window.localStorage.getItem('mySearch')
+    //mySearches.push(search)
+    //console.log("Loaded")
+    //console.log(search)
     //this.currentWeatherForecast(search);
     //this.fiveDayWeatherForecast(search);
     //this.currentWeatherForecast()
 };
 
+//Instead of worrying about converting code to string, focus on accessing value by key
 
 //Local storage processing
 function localStorage() {
-    var i = mySearches.length - 1
-    var searches = JSON.stringify(mySearches)
-    localStorage.setItem(searches)
-    var string = JSON.stringify(mySearches)
-    localStorage.setItem(i , string);
-    var group = `<li class="list-group-item">${location}</li>`
+    var i = mySearches.length // grabs number from array to use as local storage key
+    var searches = JSON.stringify(mySearches) //converts array into string to store in local storage to reload previous list
+    localStorage.setItem(i, searches) //sets string to local storage using index size as the key
+    //var group = `<li class="list-group-item">${location}</li>` Will populate recent search list
 }
 
 // mySearches.push(location)
