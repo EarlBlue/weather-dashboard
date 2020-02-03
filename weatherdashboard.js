@@ -74,46 +74,59 @@ $("#search").on("click", function() {
                 .toString();
     //console.log(text);
     var location = text
-    var key = mySearches.length
+    var key = mySearches.length + 1;
     if(mySearches.includes(text) === false) {
     mySearches.push(location);
     localStorage.setItem("My Searches" , JSON.stringify(mySearches));
+    localStorage.setItem("Last", location)
     localStorage.setItem(key , location);
+    //$("#recent").empty();
+    var group = `<li class="list-group-item">${location}</li>` //Will populate recent search list
+    $("#recent").append(group);
     }
     console.log(mySearches)
     currentWeatherForecast(location);
     fiveDayWeatherForecast(location);
+    $("#location").val("");
     
 });
 
 
 //To clear local storage
 function clearStorage() {
+    //if(localStorage > 11) {
     localStorage.clear()
+    //}
 }
 //clearStorage();
 
 
 //Behavior on window load
 window.onload = function(){
-    //var search = window.localStorage.getItem('mySearch')
-    //mySearches.push(search)
-    //console.log("Loaded")
-    //console.log(search)
-    //this.currentWeatherForecast(search);
-    //this.fiveDayWeatherForecast(search);
-    //this.currentWeatherForecast()
+    var search = localStorage.getItem('My searches');
+    var recent = localStorage.getItem("Last");
+    mySearches.push(search)
+    console.log("Loaded")
+    console.log(search)
+    this.currentWeatherForecast(recent);
+    this.fiveDayWeatherForecast(recent);
+    for (var i = 1; i < localStorage.length; i++ ) {
+        $("#recent").empty();
+        var group = `<li class="list-group-item">${this.localStorage.getItem(i)}</li>` //Will populate recent search list
+        $("#recent").append(group);
+    }
+    
 };
 
 //Instead of worrying about converting code to string, focus on accessing value by key
 
 //Local storage processing
-function localStorage() {
-    var i = mySearches.length // grabs number from array to use as local storage key
-    var searches = JSON.stringify(mySearches) //converts array into string to store in local storage to reload previous list
-    localStorage.setItem(i, searches) //sets string to local storage using index size as the key
-    //var group = `<li class="list-group-item">${location}</li>` Will populate recent search list
-}
+// function localStorage() {
+//     var i = mySearches.length // grabs number from array to use as local storage key
+//     var searches = JSON.stringify(mySearches) //converts array into string to store in local storage to reload previous list
+//     localStorage.setItem(i, searches) //sets string to local storage using index size as the key
+//     //var group = `<li class="list-group-item">${location}</li>` Will populate recent search list
+// }
 
 // mySearches.push(location)
 //     localStorage.setItem("mySearch", location);
