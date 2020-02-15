@@ -4,7 +4,7 @@ const mySearches = [];
 //To get current weather forecast and UV index data
 function currentWeatherForecast(location) {
     $("#UV").empty()
-    let queryLocation = "http://api.openweathermap.org/data/2.5/weather?q=" + location + "&units=imperial&APPID=184856c0a526c2d51fff6a52548b9f0c"; 
+    let queryLocation = "https://api.openweathermap.org/data/2.5/weather?q=" + location + "&units=imperial&APPID=184856c0a526c2d51fff6a52548b9f0c"; 
     $.ajax({
         url: queryLocation,
         method: "GET"
@@ -18,7 +18,7 @@ function currentWeatherForecast(location) {
         var longitude = response.coord.lon;
         var latitude = response.coord.lat;
         function getUvIndex() {
-            let uvIndexData = "http://api.openweathermap.org/data/2.5/uvi?APPID=184856c0a526c2d51fff6a52548b9f0c&lat=" + latitude + "&lon=" + longitude;
+            let uvIndexData = "https://api.openweathermap.org/data/2.5/uvi?APPID=184856c0a526c2d51fff6a52548b9f0c&lat=" + latitude + "&lon=" + longitude;
             $.ajax({
                 url: uvIndexData,
                 method: "GET"
@@ -45,7 +45,7 @@ function currentWeatherForecast(location) {
 //To get 5 day forecast data
 function fiveDayWeatherForecast(location) {
     $("#card-content").empty()
-    let queryLocation = "http://api.openweathermap.org/data/2.5/forecast?q=" + location + "&units=imperial&APPID=184856c0a526c2d51fff6a52548b9f0c"; 
+    let queryLocation = "https://api.openweathermap.org/data/2.5/forecast?q=" + location + "&units=imperial&APPID=184856c0a526c2d51fff6a52548b9f0c"; 
     $.ajax({
         url: queryLocation,
         method: "GET"
